@@ -1,7 +1,17 @@
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
-db = SQLAlchemy()
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
+from db_credentials import DB_URI
+
+# intialize app, connect DB, integrate marshmallow 
+app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = DB_URI
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+db = SQLAlchemy(app)
+ma = Marshmallow(app)
+
 
 class Survey(db.Model):
     __tablename__ = 'surveys'
@@ -11,8 +21,6 @@ class Survey(db.Model):
     start_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     end_date = db.Column(db.DateTime, nullable=True)
     description = db.Column(db.String(), nullable=True)
-
-    questions = db.relationship("Question", backref="survey", lazy=True)
 
     def __repr__(self):
         return f'<Survey {self.id} : {self.name}>'
@@ -51,7 +59,9 @@ class Question(db.Model):
     body = db.Column(db.String(), nullable=False)
     note = db.Column(db.String(), nullable=True)
 
+    # one-to-many relationship (Survey-Questions)
     survey_id = db.Column(db.Integer, db.ForeignKey("surveys.id"), nullable=False)
+    survey = db.relationship("Survey", backref="questions", lazy=True)
 
     def __repr__(self):
         return f'<Question {self.id} : {self.body}>'
