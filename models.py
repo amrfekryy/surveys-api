@@ -35,7 +35,16 @@ class Survey(db.Model):
     def __repr__(self):
         return f'<Survey {self.id} : {self.name}>'
 
+    def set_datetime(self, start_or_end, datetime_str):
+        """turn datetime string into datetime object"""
+        datetime_obj = datetime.strptime(datetime_str, '%d/%m/%Y %H:%M')
+        if start_or_end == 'start':
+            self.start_date = datetime_obj
+        elif start_or_end == 'end':
+            self.end_date = datetime_obj
+
     def get_datetime(self, start_or_end):
+        """turn datetime object into datetime string"""
         if start_or_end == 'start':
             return self.start_date.strftime('%d/%m/%Y %H:%M')
         elif start_or_end == 'end':

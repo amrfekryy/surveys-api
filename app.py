@@ -98,8 +98,8 @@ def survey():
         new_survey = Survey()
         new_survey.name = survey_data.get('name')
         new_survey.description = survey_data.get('description')
-        new_survey.start_date = survey_data.get('start_date')
-        new_survey.end_date = survey_data.get('end_date')
+        new_survey.set_datetime('start', survey_data.get('start_date'))
+        new_survey.set_datetime('end', survey_data.get('end_date'))
         new_survey.user = g.user
         db.session.add(new_survey)
         # add survey questions
