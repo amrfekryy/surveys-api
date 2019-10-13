@@ -1,8 +1,23 @@
 from flask import ( 
-    Flask, render_template, request, redirect, 
-    url_for, flash, jsonify )
+    Flask, request, jsonify, send_from_directory )
 
 from models import *
+# from flask_swagger_ui import get_swaggerui_blueprint
+
+
+# ### swagger specific ###
+# @app.route('/static/<path:path>')
+# def send_static(path):
+#     return send_from_directory('static', path)
+
+# SWAGGER_URL = '/swagger'
+# API_URL = '/static/swagger.json'
+# SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
+#     SWAGGER_URL,
+#     API_URL,
+# )
+# app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
+# ### end swagger specific ###
 
 
 @app.route('/')

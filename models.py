@@ -2,7 +2,7 @@ from datetime import datetime
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
+# from flask_marshmallow import Marshmallow
 from db_credentials import DB_URI
 
 # intialize app, connect DB, integrate marshmallow 
@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = DB_URI
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
-ma = Marshmallow(app)
+# ma = Marshmallow(app)
 
 
 class Survey(db.Model):
@@ -24,13 +24,6 @@ class Survey(db.Model):
 
     def __repr__(self):
         return f'<Survey {self.id} : {self.name}>'
-
-    def set_datetime(self, start_or_end, datetime_str):
-        datetime_object = datetime.strptime(datetime_str, '%d/%m/%Y %H:%M')
-        if start_or_end == 'start':
-            self.start_date = datetime_object
-        elif start_or_end == 'end':
-            self.end_date = datetime_object
 
     def get_datetime(self, start_or_end):
         if start_or_end == 'start':
@@ -73,3 +66,15 @@ class Question(db.Model):
             'body': self.body,
             'note': self.note
         }
+
+
+# class QuestionSchema(ma.ModelSchema):
+#     class Meta:
+#         model = Question
+#         # field to expose
+#         fields = ("body", "note")
+
+# class SurveySchema(ma.ModelSchema):
+#     class Meta:
+#         model = Survey
+#     questions = ma.Nested(QuestionSchema2, many=True)
